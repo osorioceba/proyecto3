@@ -68,7 +68,19 @@ def tsup(f: Finca, i: Int): Int = {
   def prior(f: Finca, i: Int): Int = {
     f(i)._3
   }
-
+  def tIR(f: Finca, pi: ProgRiego): TiempoInicioRiego = {
+    // Dada una finca f y una programación de riego pi,
+    // y f.length == n, tIR(f, pi) devuelve t: TiempoInicioRiego
+    // tal que t(i) es el tiempo en que inicia el riego del
+    // tablon i de la finca f según pi
+    val tiempos = Array.fill(f.length)(0)
+    for (j <- 1 until pi.length) {
+      val prevTablon = pi(j - 1)
+      val currTablon = pi(j)
+      tiempos(currTablon) = tiempos(prevTablon) + treg(f, prevTablon)
+    }
+    tiempos.toVector
+  }
 
   def ProgramacionRiegoOptimo(f: Finca, d: Distancia): (ProgRiego, Int) = {
     // Dada una finca devuelve la programación
