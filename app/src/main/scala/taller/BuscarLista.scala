@@ -42,6 +42,7 @@ class BuscarLista() {
     )
     v
   }
+  
 def distanciaAlazar(long: Int): Distancia = {
     // Crea una matriz de distancias para una finca
     // de long tablones, con valores aleatorios entre
@@ -53,4 +54,17 @@ def distanciaAlazar(long: Int): Distancia = {
       else v(j)(i)
     )
   }
+
+def tsup(f: Finca, i: Int): Int = {
+    f(i)._1
+  }
+
+  def treg(f: Finca, i: Int): Int = {
+    f(i)._2
+  }
+
+  def prior(f: Finca, i: Int): Int = {
+    f(i)._3
+  }
+
 }
