@@ -25,4 +25,32 @@ class BuscarLista() {
     case x :: xs => if (x == elemento) true else buscarElemento(xs, elemento)
    }
   }
+
+  def costoRiegoTablon(i: Int, f: Finca, pi: ProgRiego): Int = {
+    val tiempoInicio = tIR(f, pi)(i)
+    val tiempoFinal = tiempoInicio + treg(f, i)
+    if (tsup(f, i) - treg(f, i) >= tiempoInicio) {
+      tsup(f, i) - tiempoFinal
+    } else {
+      prior(f, i) * (tiempoFinal - tsup(f, i))
+    }
+  }
+
+  def costoRiegoFinca(f: Finca, pi: ProgRiego): Int = {
+    (0 until f.length).map(i => costoRiegoTablon(i, f, pi)).sum
+  }
+
+  def costoMovilidad(f: Finca, pi: ProgRiego, d: Distancia): Int = {
+    (0 until pi.length - 1).map(j => d(pi(j))(pi(j + 1))).sum
+  }
+
+  def generarProgramacionesRiego(f: Finca): Vector[ProgRiego] = {
+    // Dada una finca de n tablones, devuelve todas las
+    // posibles programaciones de riego de la finca
+    val indices = (0 until f.length).toVector
+    indices.permutations.toVector
+  }
+
+
+
 }
