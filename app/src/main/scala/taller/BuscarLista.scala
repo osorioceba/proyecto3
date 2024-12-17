@@ -1,5 +1,6 @@
 package taller
 import scala.util.Random
+import scala.collection.parallel.CollectionConverters._
 
 class BuscarLista() {
   // el tiempo de riego y la prioridad del tablon
@@ -52,5 +53,26 @@ def distanciaAlazar(long: Int): Distancia = {
       else if (i == j) 0
       else v(j)(i)
     )
+  }
+
+  def ProgramacionRiegoOptimo(f: Finca, d: Distancia): (ProgRiego, Int) = {
+    // Dada una finca devuelve la programación
+    // de riego óptima
+    val programaciones = generarProgramacionesRiego(f)
+    val costos = programaciones.map(pi =>
+      (pi, costoRiegoFinca(f, pi) + costoMovilidad(f, pi, d))
+    )
+    costos.minBy(_._2)
+  }
+
+  def costoRiegoFincaPar(f: Finca, pi: ProgRiego): Int = {
+    // Devuelve el costo total de regar una finca f dada una
+    // programación de riego pi, calculando en paralelo
+    (0 until f.length).par.map(i => costoRiegoTablon(i, f, pi)).sum
+  }
+
+  def costoMovilidadPar(f: Finca, pi: ProgRiego, d: Distancia): Int = {
+    // Calcula el costo de movilidad de manera paralela
+    (0 until pi.length - 1).par.map(j => d(pi(j))(pi(j + 1))).sum
   }
 }
