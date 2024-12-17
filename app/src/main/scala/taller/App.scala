@@ -3,10 +3,39 @@
  */
 package taller
 
+import org.scalameter._
+
+
 object App {
-  def main(args: Array[String]): Unit = {
-    println(greeting())
+  val buscarLista = new BuscarLista()  
+
+  def calcular_tiempo(tamano: Int): Unit = {
+    val finca = buscarLista.fincaAlazar(tamano)  
+    val distancia = buscarLista.distanciaAlazar(tamano) 
+    val timeSeq = measure {
+      buscarLista.ProgramacionRiegoOptimo(finca, distancia)
+    }
+    val timePar = measure {
+      buscarLista.ProgramacionRiegoOptimoPar(finca, distancia)
+    }
+    println(s"Secuencial: $timeSeq ms")
+    println(s"Paralelo: $timePar ms")
   }
 
-  def greeting(): String = "Hello, world!"
+
+  def main(args: Array[String]): Unit = {
+    
+
+    
+    for (i <- Seq(6, 8, 10, 11 ,12)) {
+      calcular_tiempo(i)
+    }
+
+   
+
+    //for (j <- Seq(100, 200)) {
+    //   calcular_tiempo(j)
+    // }
+  }
 }
+
