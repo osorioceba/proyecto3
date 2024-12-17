@@ -91,4 +91,19 @@ def tsup(f: Finca, i: Int): Int = {
     (0 until pi.length - 1).par.map(j => d(pi(j))(pi(j + 1))).sum
   }
 
+  def generarProgramacionesRiegoPar(f: Finca): Vector[ProgRiego] = {
+    // Genera las programaciones posibles de manera paralela
+    val indices = (0 until f.length).toVector
+    indices.permutations.toVector.par.toVector
+  }
+
+  def ProgramacionRiegoOptimoPar(f: Finca, d: Distancia): (ProgRiego, Int) = {
+    // Dada una finca, calcula la programación óptima de riego
+    val programaciones = generarProgramacionesRiegoPar(f)
+    val costos = programaciones.par.map(pi =>
+      (pi, costoRiegoFincaPar(f, pi) + costoMovilidadPar(f, pi, d))
+    )
+    costos.minBy(_._2)
+  }
+
 }
